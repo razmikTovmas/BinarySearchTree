@@ -1,0 +1,7 @@
+﻿namespace BinarySearchTree
+{
+    class Node
+    {
+        
+    }
+}
