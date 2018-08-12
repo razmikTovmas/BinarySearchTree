@@ -50,5 +50,26 @@ namespace BinarySearchTree
 
             return null;
         }
+
+        public bool Contains(int value)
+        {
+            return ContainsRecursive(root, value);
+        }
+
+        private bool ContainsRecursive(Node node, int value)
+        {
+            if (node == null) return false;
+
+            if (node.Value == value) return true;
+
+            if (value < node.Value)
+            {
+                return ContainsRecursive(node.Left, value);
+            }
+            else
+            {
+                return ContainsRecursive(node.Right, value);
+            }
+        }
     }
 }
