@@ -72,9 +72,89 @@ namespace BinarySearchTree
             }
         }
 
-        public void Remove(int value)
+        public bool Remove(int value)
         {
+            Node nodeToRemove = FindNode(root, value);
 
+            if (nodeToRemove == null) return false;
+
+            if (nodeToRemove.Left != null && nodeToRemove.Right != null)
+            // Case 4: The value to remove has both a left and right subtree
+            {
+                Node max = FindMax(nodeToRemove.Left);
+
+                int temp = nodeToRemove.Value;
+                nodeToRemove.Value = max.Value;
+                max.Value = temp;
+
+                nodeToRemove = max;
+            }
+
+            RemoveHelper(nodeToRemove);
+            return true;
+        }
+
+        private void RemoveHelper(Node node)
+        {
+            Node parent = FindParent(root, node.Value);
+
+            if(node.Left == null && node.Right == null)
+            //  Case 1: The value to remove is a leaf node
+            {
+                if (node == root)
+                {
+                    root = null;
+                }
+                else
+                {
+                    if (parent.Left == node)
+                    {
+                        parent.Left = null;
+                    }
+                    else
+                    {
+                        parent.Right = null;
+                    }
+                }
+            }
+            else if(node.Right != null)
+            // Case 2: The value to remove has a right subtree, but no left subtree
+            {
+                if (node == root)
+                {
+                    root = node.Right;
+                }
+                else
+                {
+                    if(parent.Left == node)
+                    {
+                        parent.Left = node.Right;
+                    }
+                    else
+                    {
+                        parent.Right = node.Right;
+                    }
+                }
+            }
+            else if(node.Left != null)
+            // Case 3: The value to remove has a left subtree, but no right subtree
+            {
+                if (node == root)
+                {
+                    root = node.Left;
+                }
+                else
+                {
+                    if(parent.Left == node)
+                    {
+                        parent.Left = node.Left;
+                    }
+                    else
+                    {
+                        parent.Right = node.Left;
+                    }
+                }
+            }
         }
 
         private Node FindParent(Node node, int value)
@@ -129,11 +209,11 @@ namespace BinarySearchTree
             }
         }
 
-        private int FindMin(Node node)
+        private Node FindMin(Node node)
         {
             if (node.Left == null)
             {
-                return node.Value;
+                return node;
             }
             else
             {
@@ -141,11 +221,11 @@ namespace BinarySearchTree
             }
         }
 
-        private int FindMax(Node node)
+        private Node FindMax(Node node)
         {
             if(node.Right == null)
             {
-                return node.Value;
+                return node;
             }
             else
             {
