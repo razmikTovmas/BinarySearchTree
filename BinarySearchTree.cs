@@ -232,5 +232,50 @@ namespace BinarySearchTree
                 return FindMax(node.Right);
             }
         }
+
+        public void Preorder()
+        {
+            PreorderHelper(root);
+        }
+
+        private void PreorderHelper(Node node)
+        {
+            if(node != null)
+            {
+                Console.WriteLine(node.Value);
+                PreorderHelper(node.Left);
+                PreorderHelper(node.Right);
+            }
+        }
+
+        public void Postorder()
+        {
+            PostorderHelper(root);
+        }
+
+        private void PostorderHelper(Node node)
+        {
+            if(node != null)
+            {
+                PostorderHelper(node.Left);
+                PostorderHelper(node.Right);
+                Console.WriteLine(node.Value);
+            }
+        }
+
+        public void Inorder()
+        {
+            InorderHelper(root);
+        }
+
+        private void InorderHelper(Node node)
+        {
+            if(node != null)
+            {
+                InorderHelper(node.Left);
+                Console.WriteLine(node.Value);
+                InorderHelper(node.Right);
+            }
+        }
     }
 }
