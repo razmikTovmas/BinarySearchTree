@@ -1,4 +1,6 @@
-﻿namespace BinarySearchTree
+﻿using System;
+
+namespace BinarySearchTree
 {
     class AVLTree
     {
@@ -98,6 +100,97 @@
             yNode.Height--;
 
             return xNode;
+        }
+
+        public void Remove(int value) { root = RemoveHelper(root, value); }
+
+        private AVLNode RemoveHelper(AVLNode node, int value)
+        {
+            // Binary Search Tree deletion
+            if (node == null) return node;
+            if (value < node.Value)
+            // Node is in left subtree
+            {
+                node.Left = RemoveHelper(node.Left, value);
+            }
+            else if (value > node.Value)
+            // Node is in right subtree
+            {
+                node.Right = RemoveHelper(node.Right, value);
+            }
+            else
+            // Here we are
+            {
+                if((node.Left == null) || (node.Right == null))
+                // Node with one child
+                {
+                    AVLNode temp = null;
+                    if (temp == node.Left) temp = node.Right;
+                    else temp = node.Left;
+
+                    if(temp == null)
+                    {
+                        temp = node;
+                        node = null;
+                    }
+                    else
+                    {
+                        node = temp;
+                    }
+                }
+                else
+                // Node with two children
+                {
+                    AVLNode temp = FindMin(node.Right);
+                    node.Value = temp.Value;
+
+                    node.Right = RemoveHelper(node.Right, temp.Value);
+                }
+            }
+
+            if (node == null) return node; // Tree had one node
+
+            node.Height = 1 + Max(Height(node.Left), Height(node.Right));
+
+            int balance = Balance(node);
+
+            
+            if (balance > 1 && Balance(node.Left) >= 0)
+            // Left Left Case
+            {
+                return RightRotation(node);
+            }
+            else if (balance > 1 && Balance(node.Left) < 0)
+            // Left Right Case
+            {
+                node.Left = LeftRotation(node.Left);
+                return RightRotation(node);
+            }
+            else if (balance < -1 && Balance(node.Right) <= 0)
+            // Right Right Case
+            {
+                return LeftRotation(node);
+            }
+            else if (balance < -1 && Balance(node.Right) > 0)
+            // Right Left Case
+            {
+                node.Right = RightRotation(node.Right);
+                return LeftRotation(node);
+            }
+
+            return node;
+        }
+
+        private AVLNode FindMin(AVLNode node)
+        {
+            if (node.Left == null)
+            {
+                return node;
+            }
+            else
+            {
+                return FindMin(node.Left);
+            }
         }
     }
 }
