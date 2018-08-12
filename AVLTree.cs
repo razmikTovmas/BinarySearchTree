@@ -3,7 +3,11 @@
     class AVLTree
     {
         private AVLNode root;
-        
+
+        private int Max(int a, int b) { return (a > b) ? a : b; }
+        private int Height(AVLNode node) { return (node != null) ? node.Height : 0; }
+        private int Balance(AVLNode node) { return (node != null) ? Height(node.Left) - Height(node.Right) : 0; }
+
         private AVLNode LeftRotation(AVLNode yNode)
         //    y                            x
         //   / \      Left Rotation       / \
