@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BinarySearchTree
 {
@@ -78,8 +79,9 @@ namespace BinarySearchTree
             yNode.Right = xNode.Left;
             xNode.Left = yNode;
 
-            xNode.Height++;
-            yNode.Height--;
+            xNode.Height = Max(Height(xNode.Left), Height(xNode.Right)) + 1;
+            yNode.Height = Max(Height(yNode.Left), Height(yNode.Right)) + 1;
+
 
             return xNode;
         }
@@ -96,8 +98,8 @@ namespace BinarySearchTree
             yNode.Left = xNode.Right;
             xNode.Right = yNode;
 
-            xNode.Height++;
-            yNode.Height--;
+            xNode.Height = Max(Height(xNode.Left), Height(xNode.Right)) + 1;
+            yNode.Height = Max(Height(yNode.Left), Height(yNode.Right)) + 1;
 
             return xNode;
         }
@@ -235,6 +237,34 @@ namespace BinarySearchTree
                 InorderHelper(node.Left);
                 Console.WriteLine(node.Value);
                 InorderHelper(node.Right);
+            }
+        }
+
+        public void BreadthFirst()
+        {
+            AVLNode node = root;
+            List<AVLNode> list = new List<AVLNode>();
+            while (node != null)
+            {
+                Console.WriteLine(node.Value);
+                if (node.Left != null)
+                {
+                    list.Add(node.Left);
+                }
+                if (node.Right != null)
+                {
+                    list.Add(node.Right);
+                }
+
+                if (list.Count > 0)
+                {
+                    node = list[0];
+                    list.Remove(list[0]);
+                }
+                else
+                {
+                    node = null;
+                }
             }
         }
     }
